@@ -2,7 +2,7 @@
 
 # Your team member names and uic emails go here
 
-# Your GitHub repository link goes here
+# [Your GitHub repository link goes here](https://github.com/eleon23/final-project-emoji-riddle)
 If you have a private repository, please add `kaytwo` and `sauravjoshi` as collaborators.
 
 ## What does your application do?
