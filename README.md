@@ -1,5 +1,7 @@
 # Emoji Riddle with Friends
 
+# [Deployed Website](https://brilliant-creponne-cdcbb0.netlify.app/)
+
 # Team
 
 1. Eric Leon (eleon23@uic.edu)
