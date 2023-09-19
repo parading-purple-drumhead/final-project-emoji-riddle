@@ -40,3 +40,11 @@
 .read-the-docs {
   color: #888;
 }
+
+.title-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Moves content to the top */
+  align-items: center; /* Centers horizontally */
+  height: 100vh; /* Makes the container take up the full viewport height */
+}
