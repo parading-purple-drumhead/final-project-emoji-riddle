@@ -1,28 +1,24 @@
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import architectureImage from "./assets/main_architecture.png";
+import Login from "./components/Login";
+import { Route, Routes } from "react-router-dom";
+import Signup from "./components/Signup";
 
 function App() {
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-        <h1>Emoji Riddle with Friends</h1>
-        <img
-          src={architectureImage}
-          className="architecture"
-          alt="Architecture"
-          width="1000px"
-          height="800px"
-        />
+    <div className="app">
+      <div className="container">
+        <div className="row">
+          <div className="col-4 offset-4">
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+            </Routes>
+            <Login />
+          </div>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 
