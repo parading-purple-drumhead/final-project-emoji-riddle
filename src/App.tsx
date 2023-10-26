@@ -4,18 +4,22 @@ import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Navbar from "./components/Navbar";
+import Dashboard from "./pages/Dashboard";
+import GameSetup from "./pages/GameSetup";
+import GameLobby from "./pages/GameLobby";
+import GameScreen from "./pages/GameScreen";
 
 function App() {
   return (
     <div className="app bg-light" style={{ height: "100vh" }}>
       <Navbar />
-      <div className="container">
-        <div className="row">
-          <Routes>
-            <Route path="/" element={<Login />} />
-          </Routes>
-        </div>
-      </div>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/gamesetup" element={<GameSetup />} />
+        <Route path="/gamelobby" element={<GameLobby />} />
+        <Route path="/gamescreen" element={<GameScreen />} />
+      </Routes>
     </div>
   );
 }
