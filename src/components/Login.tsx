@@ -14,7 +14,7 @@ const Login = () => {
     <div className="login">
       <div className="card">
         <div className="card-header">
-          <h4>Login to Emoji Riddle With Friends</h4>
+          <h4>Login to Emoji Riddle</h4>
         </div>
         <div className="card-body">
           <form
