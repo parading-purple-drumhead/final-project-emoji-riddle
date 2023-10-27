@@ -5,12 +5,12 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: import.meta.env.PUBLIC_FIREBASE_API_KEY,
-    authDomain: import.meta.env.PUBLIC_FIREBASE_AUTHDOMAIN,
-    projectId: import.meta.env.PUBLIC_FIREBASE_PROJECT_ID,
-    storageBucket: import.meta.env.PUBLIC_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: import.meta.env.PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-    appId: import.meta.env.PUBLIC_FIREBASE_APP_ID,
+  apiKey: "AIzaSyB0r2yar_2x00Rl87l_rf759zK8YOQl4MY",
+  authDomain: "emoji-riddle-with-friends.firebaseapp.com",
+  projectId: "emoji-riddle-with-friends",
+  storageBucket: "emoji-riddle-with-friends.appspot.com",
+  messagingSenderId: "526900602444",
+  appId: "1:526900602444:web:9fe9522c0981a061f5f6e9",
 };
 
 // Initialize Firebase
