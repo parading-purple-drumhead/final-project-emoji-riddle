@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 const Login = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="login my-5">
       <div className="row my-5">
@@ -10,7 +14,10 @@ const Login = () => {
             <div className="card-body">
               <div className="row my-3">
                 <div className="col-lg-6 offset-lg-3 position-relative">
-                  <button className="btn btn-primary shadow-sm mx-5">
+                  <button
+                    className="btn btn-primary shadow-sm mx-5"
+                    onClick={() => navigate("/dashboard")}
+                  >
                     <i className="bi-google me-2"></i>
                     Login with Google
                   </button>
