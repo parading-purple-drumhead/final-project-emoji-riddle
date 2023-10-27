@@ -1,21 +1,19 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import "./App.css";
-import Login from "./components/Login";
 import { Route, Routes } from "react-router-dom";
-import Signup from "./components/Signup";
+import Login from "./pages/Login";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
-    <div className="app">
+    <div className="app bg-light" style={{ height: "100vh" }}>
+      <Navbar />
       <div className="container">
         <div className="row">
-          <div className="col-4 offset-4">
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-            </Routes>
-            <Login />
-          </div>
+          <Routes>
+            <Route path="/" element={<Login />} />
+          </Routes>
         </div>
       </div>
     </div>
