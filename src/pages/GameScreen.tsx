@@ -1,6 +1,50 @@
+import { useState } from "react";
+import Guess from "../components/Guess";
 import Player from "../components/Player";
+import Phrase from "../components/Phrase";
 
 const GameScreen = () => {
+  const [roundStarted, setRoundStarted] = useState(false);
+  const [isTurn, setIsTurn] = useState(true);
+  const [round] = useState(1);
+  const [phrases, setPhrases] = useState([
+    "World is a stage",
+    "Pants on fire",
+    "Hot as hell",
+  ]);
+  const [phrase, setPhrase] = useState("");
+  const [players] = useState([
+    { name: "Player 1", isHost: true, isTurn: false },
+    { name: "Player 2", isHost: false, isTurn: false },
+    { name: "Player 3", isHost: false, isTurn: true },
+  ]);
+  const [currentGuess, setCurrentGuess] = useState("");
+  const [guesses, setGuesses] = useState([
+    { name: "Player 1", guess: "Lorem ipsum dolor sit amet", correct: false },
+    { name: "Player 2", guess: "Lorem ipsum dolor sit amet", correct: false },
+    { name: "Player 3", guess: "Lorem ipsum dolor sit amet", correct: false },
+  ]);
+
+  const handleGuessClick = () => {
+    if (currentGuess !== phrase) {
+      setGuesses([
+        ...guesses,
+        { name: "Player 1", guess: currentGuess, correct: false },
+      ]);
+      setCurrentGuess("");
+    } else {
+      setGuesses([
+        ...guesses,
+        { name: "Player 1", guess: "Player 1 guessed", correct: true },
+      ]);
+    }
+  };
+
+  const handlePhraseClick = (e: React.FormEvent, phrase: string) => {
+    setPhrase(phrase);
+    setRoundStarted(true);
+  };
+
   return (
     <div className="game-screen">
       <div className="container-fluid">
@@ -10,16 +54,13 @@ const GameScreen = () => {
           style={{ borderBottom: "1px solid #ddd" }}
         >
           <div className="col-lg-3" id="round-counter">
-            <h3 className="my-2">Round 1 of 3</h3>
+            <h3 className="my-2">Round {round} of 3</h3>
           </div>
           <div
-            className="col-lg-6 text-center"
-            id="phrase-space"
+            className="col-lg-6 text-center phrase-space"
             style={{ fontSize: "2rem" }}
           >
-            <span className="me-2">_ _ _ _</span> &nbsp;
-            <span className="me-2">_ _</span> &nbsp;
-            <span>_ _ _ _</span>
+            <Phrase phrase={phrase} />
           </div>
         </div>
 
@@ -29,48 +70,107 @@ const GameScreen = () => {
             id="playerPanel"
             style={{ borderRight: "1px solid #ddd", height: "80vh" }}
           >
-            <Player name="Player 1" isTurn={true} isHost={true} />
-            <Player name="Player 2" isTurn={false} isHost={false} />
-            <Player name="Player 3" isTurn={false} isHost={false} />
+            {players.map((player, i) => (
+              <Player
+                key={i}
+                name={player.name}
+                isTurn={player.isTurn}
+                isHost={player.isHost}
+              />
+            ))}
           </div>
 
           <div className="col-lg-9" id="gamePanel">
+            {!roundStarted && (
+              <div
+                className="row"
+                style={{
+                  position: "fixed",
+                  width: "75%",
+                  height: "85%",
+                  backgroundColor: "rgba(0,0,0,0.5)",
+                  zIndex: 2,
+                  backdropFilter: "blur(2px)",
+                  alignItems: "center",
+                }}
+              >
+                {!isTurn && (
+                  <p
+                    className="text-white text-center"
+                    style={{ fontSize: "2rem" }}
+                  >
+                    <i>Player 1 is picking...</i>
+                  </p>
+                )}
+
+                {isTurn && (
+                  <div className="phrase-picker">
+                    <h2 className="text-center text-white">Pick a Phrase</h2>
+                    <div className="row mt-4">
+                      <div className="col-12 text-center">
+                        {phrases.map((phrase) => {
+                          return (
+                            <button
+                              className="btn btn-outline-light btn-large mx-2"
+                              style={{ fontSize: "1.25rem" }}
+                              onClick={(e) => handlePhraseClick(e, phrase)}
+                            >
+                              {phrase}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
             <div className="row">
               <div
                 className="col-lg-8"
                 id="emoji-panel"
-                style={{ borderRight: "1px solid #ddd", height: "80vh" }}
-              ></div>
+                style={{
+                  borderRight: "1px solid #ddd",
+                  height: "80vh",
+                }}
+              >
+                <div className="row" style={{ height: "40vh" }}></div>
+                <div className="row" style={{ height: "30vh" }}></div>
+                <div
+                  className="row py-4"
+                  style={{ borderTop: "1px solid #ddd" }}
+                >
+                  <div className="col-10">
+                    <input
+                      type="email"
+                      className="form-control"
+                      placeholder="Type your guess..."
+                      value={currentGuess}
+                      onChange={(e) => setCurrentGuess(e.target.value)}
+                    />
+                  </div>
+                  <div className="col-2">
+                    <button
+                      className="btn btn-success btn-small"
+                      style={{ width: "100%" }}
+                      onClick={handleGuessClick}
+                    >
+                      Guess
+                    </button>
+                  </div>
+                </div>
+              </div>
               <div className="col-lg-4 pt-2" id="chat-panel">
                 <h4 className="text-center">Guesses</h4>
                 <div className="chats row mt-3">
-                  <div
-                    className="chat col-12 py-2"
-                    style={{ borderBottom: "1px solid #ddd" }}
-                  >
-                    <span className="me-1" style={{ fontWeight: "bold" }}>
-                      Player 1:
-                    </span>
-                    <span>Lorem ipsum dolor sit amet</span>
-                  </div>
-                  <div
-                    className="chat col-12 py-2"
-                    style={{ borderBottom: "1px solid #ddd" }}
-                  >
-                    <span className="me-1" style={{ fontWeight: "bold" }}>
-                      Player 1:
-                    </span>
-                    <span>Lorem ipsum dolor sit amet</span>
-                  </div>
-                  <div
-                    className="chat col-12 py-2"
-                    style={{ borderBottom: "1px solid #ddd" }}
-                  >
-                    <span className="me-1" style={{ fontWeight: "bold" }}>
-                      Player 1:
-                    </span>
-                    <span>Lorem ipsum dolor sit amet</span>
-                  </div>
+                  {guesses.map((guess) => (
+                    <Guess
+                      name={guess.name}
+                      guess={guess.guess}
+                      correct={guess.correct}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
