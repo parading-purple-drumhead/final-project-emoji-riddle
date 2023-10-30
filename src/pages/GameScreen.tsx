@@ -1,3 +1,5 @@
+import Player from "../components/Player";
+
 const GameScreen = () => {
   return (
     <div className="game-screen">
@@ -27,35 +29,9 @@ const GameScreen = () => {
             id="playerPanel"
             style={{ borderRight: "1px solid #ddd", height: "80vh" }}
           >
-            <div
-              className="row game-player py-2"
-              style={{ fontSize: "1.5rem" }}
-            >
-              <div className="col-2 text-center">
-                <i className="bi-person-circle"></i>
-              </div>
-              <div className="col-10">
-                Player 1 <span style={{ color: "#777" }}>(Turn)</span>
-              </div>
-            </div>
-            <div
-              className="row game-player py-2"
-              style={{ fontSize: "1.5rem" }}
-            >
-              <div className="col-2 text-center">
-                <i className="bi-person-circle"></i>
-              </div>
-              <div className="col-10">Player 2</div>
-            </div>
-            <div
-              className="row game-player py-2"
-              style={{ fontSize: "1.5rem" }}
-            >
-              <div className="col-2 text-center">
-                <i className="bi-person-circle"></i>
-              </div>
-              <div className="col-10">Player 3</div>
-            </div>
+            <Player name="Player 1" isTurn={true} isHost={true} />
+            <Player name="Player 2" isTurn={false} isHost={false} />
+            <Player name="Player 3" isTurn={false} isHost={false} />
           </div>
 
           <div className="col-lg-9" id="gamePanel">
