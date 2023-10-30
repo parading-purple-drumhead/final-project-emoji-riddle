@@ -3,3 +3,13 @@ export type PlayerProps = {
   isTurn: boolean;
   isHost: boolean;
 };
+
+export type GuessProps = {
+  name: string;
+  guess: string;
+  correct: boolean;
+};
+
+export type PhraseProps = {
+  phrase: string;
+};
