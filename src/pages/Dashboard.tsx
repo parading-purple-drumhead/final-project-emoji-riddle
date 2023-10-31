@@ -1,4 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
+// import { addDoc, collection } from "firebase/firestore";
 
 const Dashboard = () => {
   const { state } = useLocation();
