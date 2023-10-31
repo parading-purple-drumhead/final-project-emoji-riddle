@@ -5,9 +5,9 @@ import Phrase from "../components/Phrase";
 
 const GameScreen = () => {
   const [roundStarted, setRoundStarted] = useState(false);
-  const [isTurn, setIsTurn] = useState(true);
+  const [isTurn] = useState(true);
   const [round] = useState(1);
-  const [phrases, setPhrases] = useState([
+  const [phrases] = useState([
     "World is a stage",
     "Pants on fire",
     "Hot as hell",
@@ -41,6 +41,7 @@ const GameScreen = () => {
   };
 
   const handlePhraseClick = (e: React.FormEvent, phrase: string) => {
+    e.preventDefault();
     setPhrase(phrase);
     setRoundStarted(true);
   };
@@ -135,31 +136,49 @@ const GameScreen = () => {
                   height: "80vh",
                 }}
               >
-                <div className="row" style={{ height: "40vh" }}></div>
-                <div className="row" style={{ height: "30vh" }}></div>
-                <div
-                  className="row py-4"
-                  style={{ borderTop: "1px solid #ddd" }}
-                >
-                  <div className="col-10">
-                    <input
-                      type="email"
-                      className="form-control"
-                      placeholder="Type your guess..."
-                      value={currentGuess}
-                      onChange={(e) => setCurrentGuess(e.target.value)}
-                    />
-                  </div>
-                  <div className="col-2">
-                    <button
-                      className="btn btn-success btn-small"
-                      style={{ width: "100%" }}
-                      onClick={handleGuessClick}
+                {isTurn && (
+                  <div>
+                    <div
+                      className="row bg-primary"
+                      id="emoji-display"
+                      style={{ height: "40vh" }}
                     >
-                      Guess
-                    </button>
+                      <h3>Emoji display</h3>
+                    </div>
+                    <div
+                      className="row bg-success"
+                      id="emoji-picker"
+                      style={{ height: "40vh" }}
+                    >
+                      <h3>Emoji picker</h3>
+                    </div>
                   </div>
-                </div>
+                )}
+                {!isTurn && (
+                  <div
+                    className="row py-4"
+                    style={{ borderTop: "1px solid #ddd" }}
+                  >
+                    <div className="col-10">
+                      <input
+                        type="email"
+                        className="form-control"
+                        placeholder="Type your guess..."
+                        value={currentGuess}
+                        onChange={(e) => setCurrentGuess(e.target.value)}
+                      />
+                    </div>
+                    <div className="col-2">
+                      <button
+                        className="btn btn-success btn-small"
+                        style={{ width: "100%" }}
+                        onClick={handleGuessClick}
+                      >
+                        Guess
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
               <div className="col-lg-4 pt-2" id="chat-panel">
                 <h4 className="text-center">Guesses</h4>
