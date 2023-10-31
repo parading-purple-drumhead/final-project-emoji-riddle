@@ -2,8 +2,26 @@ import { useState } from "react";
 import Guess from "../components/Guess";
 import Player from "../components/Player";
 import Phrase from "../components/Phrase";
+// import { app } from "../firebase/server";
+// import { getFirestore } from "firebase-admin/firestore";
+// import { addDoc, collection } from "firebase/firestore";
+
 
 const GameScreen = () => {
+  // const db = getFirestore(app);
+  // const addTodo = async (e) => {
+  //   e.preventDefault();  
+   
+  //   try {
+  //       const docRef = await addDoc(collection(db, "games"), {
+  //         game: game,    
+  //       });
+  //       console.log("Document written with ID: ", docRef.id);
+  //     } catch (e) {
+  //       console.error("Error adding document: ", e);
+  //     }
+  // }
+
   const [roundStarted, setRoundStarted] = useState(false);
   const [isTurn] = useState(true);
   const [round] = useState(1);

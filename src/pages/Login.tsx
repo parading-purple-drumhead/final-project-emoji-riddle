@@ -2,17 +2,13 @@ import { useNavigate } from "react-router-dom";
 import {
   GoogleAuthProvider,
   getAdditionalUserInfo,
-  getAuth,
   signInWithPopup,
 } from "firebase/auth";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
-import { app } from "../firebase/client";
+import { doc, setDoc } from "firebase/firestore";
+import { db, auth } from "../firebase/client";
 
 const Login = () => {
   const navigate = useNavigate();
-
-  const auth = getAuth(app);
-  const db = getFirestore(app);
 
   const authProvider = new GoogleAuthProvider();
 

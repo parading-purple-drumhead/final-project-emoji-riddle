@@ -1,11 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import Player from "../components/Player";
-// import { useState } from "react";
 
 const GameLobby = () => {
   const { state } = useLocation();
   const { playerType, gameDetails } = state;
-  // const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   
   return (
@@ -27,7 +25,8 @@ const GameLobby = () => {
             <div>
               {playerType == "non-host" && <p>Waiting for Host...</p>}
               {playerType == "host" && 
-              <button className="btn btn-primary" onClick={()=>navigate("/gamescreen", { state: { playerType } })}>Start Game</button>}
+              <button className="btn btn-primary" onClick={
+                ()=>navigate("/gamescreen", { state: { playerType, gameDetails } })}>Start Game</button>}
               <br></br>
               <button className="btn btn-outline-danger" onClick={()=>navigate("/gamesetup", { state: { playerType } })}>Leave Game</button>
             </div>
