@@ -7,7 +7,7 @@
 
 # Checkpoint 2
 -----------------
-### [Deployed Website Link]([https://brilliant-creponne-cdcbb0.netlify.app/](https://emoji-riddle-with-friends.netlify.app/)](https://emoji-riddle-with-friends.netlify.app/)
+### [Deployed Website Link]([Emoji riddle with friends](https://emoji-riddle-with-friends.netlify.app/)](https://emoji-riddle-with-friends.netlify.app/)
 
 ### MVP Deliverables:
 The main goal for our MVP at the end of checkpoint 2 is for our application to be able to host multiple users in a lobby. We were thinking of 6 players max and have them be able to communicate emoji riddles to each other. A timer and point system will not be integrated for this deliverable. We also aim to have data being safely and securely being saved for each individual user. Finally, our last goal is to establish basic game functionality. So in short our goals:
