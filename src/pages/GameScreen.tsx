@@ -2,6 +2,7 @@ import { useState } from "react";
 import Guess from "../components/Guess";
 import Player from "../components/Player";
 import Phrase from "../components/Phrase";
+import { EmojiClickData } from "emoji-picker-react";
 import EmojiPicker from "emoji-picker-react";
 
 const GameScreen = () => {
@@ -45,6 +46,12 @@ const GameScreen = () => {
     e.preventDefault();
     setPhrase(phrase);
     setRoundStarted(true);
+  };
+
+  const [currentEmojiSelected, setCurrentEmoji] = useState([""]);
+  const handleEmojiClick = (emojiData: EmojiClickData) => {
+    console.log(emojiData.emoji);
+    setCurrentEmoji([...currentEmojiSelected, emojiData.emoji]);
   };
 
   return (
@@ -142,16 +149,25 @@ const GameScreen = () => {
                     <div
                       className="row bg-primary"
                       id="emoji-display"
-                      style={{ height: "40vh" }}
+                      style={{
+                        height: "40vh",
+                        textAlign: "center",
+                        color: "white",
+                      }}
                     >
                       <h3>Emoji display</h3>
+                      <p style={{ fontSize: 50 }}>{currentEmojiSelected}</p>
                     </div>
                     <div
                       className="row bg-success"
                       id="emoji-picker"
                       style={{ height: "40vh" }}
                     >
-                      <EmojiPicker height="100%" width="100%" />
+                      <EmojiPicker
+                        height="100%"
+                        width="100%"
+                        onEmojiClick={(emoji) => handleEmojiClick(emoji)}
+                      />
                     </div>
                   </div>
                 )}
