@@ -14,79 +14,99 @@ const GameLobby = () => {
 
   const navigate = useNavigate();
 
-  useEffect(()=>{
+  useEffect(() => {
     const gameRef = doc(db, "games", gameDetails.name);
     const unsubscribe = onSnapshot(gameRef, (doc) => {
       const gameData = doc.data();
-      if(auth.currentUser?.uid == gameData?.players[0].player){
+      if (auth.currentUser?.uid == gameData?.players[0].player) {
         setPlayerType("host");
-      }
-      else{
+      } else {
         setPlayerType("non-host");
       }
-      setPlayers(gameData?.players)
+      setPlayers(gameData?.players);
       setStarted(gameData?.started);
     });
 
-    if(started)
-      navigate("/gamescreen", { state: { playerType, gameDetails } })
+    if (started)
+      navigate("/gamescreen", { state: { playerType, gameDetails } });
     // Stop listening to changes
-    return ()=> unsubscribe();
-  },[gameDetails, navigate, playerType, started])
+    return () => unsubscribe();
+  }, [gameDetails, navigate, playerType, started]);
 
-  const startGame = ()=>{
-    if(players.length >= 2){
-      players.forEach(async (player, i)=>{
-        await setDoc(doc(db, `games/${gameDetails.name}/rounds`, `Round ${i}`), {
-          guesses: [],
-          phrase: "",
-          turn: player.player
-        });
+  const startGame = () => {
+    if (players.length >= 2) {
+      players.forEach(async (player, i) => {
+        await setDoc(
+          doc(db, `games/${gameDetails.name}/rounds`, `Round ${i + 1}`),
+          {
+            guesses: [],
+            phrase: "",
+            turn: player.player,
+            started: false,
+            completed: false,
+          }
+        );
 
         await updateDoc(doc(db, "games", gameDetails.name), {
-          started: true
+          started: true,
         });
-      })
+      });
     }
-  }
-  
+  };
+
   return (
     <div className="game-lobby">
       <h1 className="text-center">Game Lobby ({playerType})</h1>
       <div className="container-fluid">
-      <div className="card">
-        <div className="card-body">
-          <div className="row">
-          <div className="col">
-            <div>
-              <h3>Lobby Name:</h3>
-              <h6>{gameDetails.name}</h6>
-              <h1>{started && "Hello"}</h1>
+        <div className="card">
+          <div className="card-body">
+            <div className="row">
+              <div className="col">
+                <div>
+                  <h3>Lobby Name:</h3>
+                  <h6>{gameDetails.name}</h6>
+                  <h1>{started && "Hello"}</h1>
+                </div>
+                <div>
+                  <h3>Password:</h3>
+                  <h6>{playerType == "host" && gameDetails.password}</h6>
+                </div>
+                <div>
+                  {playerType == "non-host" && <p>Waiting for Host...</p>}
+                  {playerType == "host" && (
+                    <button className="btn btn-primary" onClick={startGame}>
+                      Start Game
+                    </button>
+                  )}
+                  <br></br>
+                  <button
+                    className="btn btn-outline-danger"
+                    onClick={() =>
+                      navigate("/gamesetup", { state: { playerType } })
+                    }
+                  >
+                    Leave Game
+                  </button>
+                </div>
+              </div>
+              <div className="col">
+                <h2>Players</h2>
+                <>
+                  {players.map((player, i) => {
+                    return (
+                      <Player
+                        uid={player.player}
+                        isTurn={false}
+                        isHost={i == 0}
+                      ></Player>
+                    );
+                  })}
+                </>
+              </div>
             </div>
-            <div>
-              <h3>Password:</h3>
-              <h6>{playerType == "host" && gameDetails.password}</h6>
-            </div>
-            <div>
-              {playerType == "non-host" && <p>Waiting for Host...</p>}
-              {playerType == "host" && 
-              <button className="btn btn-primary" onClick={startGame}>Start Game</button>}
-              <br></br>
-              <button className="btn btn-outline-danger" onClick={()=>navigate("/gamesetup", { state: { playerType } })}>Leave Game</button>
-            </div>
-          </div>
-          <div className="col">
-          <h2>Players</h2>
-          <>
-          {players.map((player, i)=>{
-            return <Player uid={player.player} isTurn={false} isHost={i == 0 ? true : false}></Player>
-          })}
-          </>
-          </div>
           </div>
         </div>
-      </div>
-      {/* <Link to="/gamescreen">Go to Game Screen</Link> */}
+        {/* <Link to="/gamescreen">Go to Game Screen</Link> */}
       </div>
       {/* <Link to="/gamescreen">Go to Game Screen</Link> */}
     </div>
