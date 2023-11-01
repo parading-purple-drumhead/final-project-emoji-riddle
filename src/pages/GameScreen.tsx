@@ -77,6 +77,7 @@ const GameScreen = () => {
     setShowPhrase(currentTurn == auth.currentUser?.uid);
 
     return () => unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTurn, gameDetails.name, isTurn, round]);
 
   const handleGuessClick = async () => {
@@ -133,7 +134,7 @@ const GameScreen = () => {
             className="col-lg-6 text-center phrase-space"
             style={{ fontSize: "2rem" }}
           >
-            <Phrase phrase={phrase} show={true} />
+            <Phrase phrase={phrase} show={showPhrase} />
           </div>
         </div>
 
