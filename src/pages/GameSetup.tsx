@@ -13,12 +13,12 @@ const GameSetup = () => {
     password: ""
   })
 
-
   const createGame = async()=>{
     if(gameDetails.name && gameDetails.password){
       await setDoc(doc(db, "games", gameDetails.name), {
         lobby_password: gameDetails.password,
-        players: [{player: auth.currentUser?.uid, score: 0}]
+        players: [{player: auth.currentUser?.uid, score: 0}],
+        started: false
       });
       return true;
     }

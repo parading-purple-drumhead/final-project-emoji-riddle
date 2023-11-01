@@ -1,5 +1,5 @@
 export type PlayerProps = {
-  name: string;
+  uid: string;
   isTurn: boolean;
   isHost: boolean;
 };
@@ -12,4 +12,9 @@ export type GuessProps = {
 
 export type PhraseProps = {
   phrase: string;
+};
+
+export type PlayerDetails = {
+  player: string;
+  score: number;
 };
