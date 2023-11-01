@@ -2,7 +2,7 @@ import { useState } from "react";
 import Guess from "../components/Guess";
 import Player from "../components/Player";
 import Phrase from "../components/Phrase";
-
+import EmojiPicker from "emoji-picker-react";
 
 const GameScreen = () => {
   const [roundStarted, setRoundStarted] = useState(false);
@@ -151,7 +151,7 @@ const GameScreen = () => {
                       id="emoji-picker"
                       style={{ height: "40vh" }}
                     >
-                      <h3>Emoji picker</h3>
+                      <EmojiPicker height="100%" width="100%" />
                     </div>
                   </div>
                 )}
