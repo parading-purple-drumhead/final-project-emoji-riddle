@@ -66,6 +66,7 @@ const GameScreen = () => {
       setRoundCompleted(roundData?.completed);
     });
 
+    console.log(currentTurn, auth.currentUser?.uid);
     console.log(currentTurn == auth.currentUser?.uid);
 
     setIsTurn(currentTurn == auth.currentUser?.uid);
@@ -73,7 +74,7 @@ const GameScreen = () => {
     console.log(isTurn);
 
     return () => unsubscribe();
-  }, []);
+  }, [currentTurn, gameDetails.name, isTurn, round]);
 
   const handleGuessClick = async () => {
     const roundRef = doc(
