@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 // import { addDoc, collection } from "firebase/firestore";
 
 const Dashboard = () => {
@@ -18,12 +18,17 @@ const Dashboard = () => {
           <div className="card">
             <div className="card-body my-3">
               <h3 className="text-center">Welcome, {displayName}!</h3>
-              <div className="alert alert-primary alert-dismissible fade show text-center" role="alert">
-              <strong>How to Play: </strong>
-              Welcome to Emoji Riddle with Friends.
-              The rules of the game are simple. When it's your turn, you pick a phrase from the list and emojis that best describe the phrase.
-              The other participants have to try to guess the original phrase from the emojis picked by you.
-              Currently, we're not playing with a timer, so take your time guessing!
+              <div
+                className="alert alert-primary alert-dismissible fade show text-center"
+                role="alert"
+              >
+                <strong>How to Play: </strong>
+                Welcome to Emoji Riddle with Friends. The rules of the game are
+                simple. When it's your turn, you pick a phrase from the list and
+                emojis that best describe the phrase. The other participants
+                have to try to guess the original phrase from the emojis picked
+                by you. Currently, we're not playing with a timer, so take your
+                time guessing!
               </div>
               <p className="text-center" style={{ fontSize: "1.5rem" }}>
                 Select One
@@ -50,7 +55,6 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <Link to="/gamesetup">Go to Game Setup</Link>
     </div>
   );
 };
