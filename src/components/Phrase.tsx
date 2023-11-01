@@ -1,6 +1,7 @@
 import { PhraseProps } from "../utils/types";
 
 const Phrase = ({ phrase, show }: PhraseProps) => {
+  phrase = phrase.toUpperCase();
   const phraseWords = phrase.split(" ");
   const phraseLetters = phraseWords.map((phraseWord) => {
     let phraseLetter = "";

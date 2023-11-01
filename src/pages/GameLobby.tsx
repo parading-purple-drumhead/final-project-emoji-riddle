@@ -107,9 +107,7 @@ const GameLobby = () => {
             </div>
           </div>
         </div>
-        {/* <Link to="/gamescreen">Go to Game Screen</Link> */}
       </div>
-      {/* <Link to="/gamescreen">Go to Game Screen</Link> */}
     </div>
   );
 };

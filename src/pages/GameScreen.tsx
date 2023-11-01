@@ -9,6 +9,7 @@ import {
   arrayUnion,
   doc,
   getDoc,
+  increment,
   onSnapshot,
   updateDoc,
 } from "firebase/firestore";
@@ -19,17 +20,39 @@ const GameScreen = () => {
   const { state } = useLocation();
   const { gameDetails } = state;
 
+  const listOfPhrases: string[] = [
+    "World is a stage",
+    "Pants on fire",
+    "Break a leg",
+    "When pigs fly",
+    "Speak of the devil",
+    "Penny for your thoughts",
+    "Storm in a tea cup",
+    "Elephant in the room",
+    "Two birds one stone",
+    "Hit the nail on the head",
+    "Fish out of water",
+    "Piece of cake",
+    "Spill the beans",
+  ];
+
+  const getRandomPhrases = (listOfPhrases: string[]) => {
+    const selectedPhrases = [];
+    while (selectedPhrases.length < 3) {
+      const randomIndex = Math.floor(Math.random() * listOfPhrases.length);
+      selectedPhrases.push(listOfPhrases.splice(randomIndex, 1)[0]);
+    }
+    return selectedPhrases;
+  };
+
   const [currentUserName, setCurrentUserName] = useState(null);
   const [roundStarted, setRoundStarted] = useState(false);
   const [roundCompleted, setRoundCompleted] = useState(false);
   const [currentTurn, setCurrentTurn] = useState(null);
+  const [currentTurnName, setCurrentTurnName] = useState(null);
   const [isTurn, setIsTurn] = useState(false);
   const [round, setRound] = useState(1);
-  const [phrases] = useState([
-    "World is a stage",
-    "Pants on fire",
-    "Hot as hell",
-  ]);
+  const [phrases] = useState(getRandomPhrases(listOfPhrases));
   const [phrase, setPhrase] = useState("");
   const [players, setPlayers] = useState<PlayerDetails[]>([]);
   const [currentEmojisSelected, setCurrentEmojisSelected] = useState([""]);
@@ -37,13 +60,15 @@ const GameScreen = () => {
   const [guesses, setGuesses] = useState<GuessProps[]>([]);
   const [showPhrase, setShowPhrase] = useState(false);
 
+  const gameRef = doc(db, "games", gameDetails.name);
+
   const fetchGameData = async () => {
-    const gameRef = doc(db, "games", gameDetails.name);
     const gameData = (await getDoc(gameRef)).data();
 
     const userRef = doc(db, "users", auth.currentUser!.uid);
     const userData = (await getDoc(userRef)).data();
 
+    setRound(gameData?.currentRound);
     setPlayers(gameData?.players);
     setCurrentUserName(userData?.name);
   };
@@ -53,6 +78,12 @@ const GameScreen = () => {
     `games/${gameDetails.name}/rounds`,
     `Round ${round}`
   );
+
+  const fetchCurrentTurnUserData = async () => {
+    const userRef = doc(db, "users", currentTurn!);
+    const userData = (await getDoc(userRef)).data();
+    setCurrentTurnName(userData?.name);
+  };
 
   useEffect(() => {
     fetchGameData();
@@ -70,18 +101,21 @@ const GameScreen = () => {
       setCurrentEmojisSelected(roundData?.emojis);
     });
 
-    console.log(currentTurn, auth.currentUser?.uid);
-    console.log(currentTurn == auth.currentUser?.uid);
+    console.log("Round", round);
+
+    if (currentTurn == auth.currentUser?.uid)
+      setCurrentTurnName(currentUserName);
+    else fetchCurrentTurnUserData();
 
     setIsTurn(currentTurn == auth.currentUser?.uid);
     setShowPhrase(currentTurn == auth.currentUser?.uid);
 
     return () => unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentTurn, gameDetails.name, isTurn, round]);
+  }, [currentTurn, gameDetails.name, isTurn, round, roundCompleted]);
 
   const handleGuessClick = async () => {
-    if (currentGuess !== phrase) {
+    if (currentGuess.toLowerCase() !== phrase.toLowerCase()) {
       await updateDoc(roundRef, {
         guesses: arrayUnion({
           name: currentUserName,
@@ -119,6 +153,19 @@ const GameScreen = () => {
     });
   };
 
+  const handleEndRoundClick = async () => {
+    await updateDoc(roundRef, {
+      completed: true,
+    });
+
+    if (round < players.length)
+      await updateDoc(gameRef, {
+        currentRound: increment(1),
+      });
+
+    setRound(round + 1);
+  };
+
   return (
     <div className="game-screen">
       <div className="container-fluid">
@@ -151,6 +198,19 @@ const GameScreen = () => {
                 isHost={i == 0}
               />
             ))}
+            {isTurn && roundStarted && (
+              <div className="row mt-5">
+                <div className="col-6 offset-3 col-xl-4 offset-xl-4">
+                  <button
+                    className="btn btn-danger"
+                    style={{ width: "100%" }}
+                    onClick={handleEndRoundClick}
+                  >
+                    End Round
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="col-lg-9" id="gamePanel">
@@ -172,7 +232,7 @@ const GameScreen = () => {
                     className="text-white text-center"
                     style={{ fontSize: "2rem" }}
                   >
-                    <i>Player 1 is picking...</i>
+                    <i>{currentTurnName} is picking...</i>
                   </p>
                 )}
 
