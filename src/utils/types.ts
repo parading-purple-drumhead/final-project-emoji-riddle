@@ -12,6 +12,7 @@ export type GuessProps = {
 
 export type PhraseProps = {
   phrase: string;
+  show: boolean;
 };
 
 export type PlayerDetails = {

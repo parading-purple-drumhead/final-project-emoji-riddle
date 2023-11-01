@@ -44,6 +44,7 @@ const GameLobby = () => {
             turn: player.player,
             started: false,
             completed: false,
+            emojis: [],
           }
         );
 
