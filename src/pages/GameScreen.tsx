@@ -18,6 +18,7 @@ import { GuessProps, PlayerDetails } from "../utils/types";
 const GameScreen = () => {
   const { state } = useLocation();
   const { gameDetails } = state;
+
   const [currentUserName, setCurrentUserName] = useState(null);
   const [roundStarted, setRoundStarted] = useState(false);
   const [roundCompleted, setRoundCompleted] = useState(false);
@@ -31,8 +32,10 @@ const GameScreen = () => {
   ]);
   const [phrase, setPhrase] = useState("");
   const [players, setPlayers] = useState<PlayerDetails[]>([]);
+  const [currentEmojisSelected, setCurrentEmojisSelected] = useState([""]);
   const [currentGuess, setCurrentGuess] = useState("");
   const [guesses, setGuesses] = useState<GuessProps[]>([]);
+  const [showPhrase, setShowPhrase] = useState(false);
 
   const fetchGameData = async () => {
     const gameRef = doc(db, "games", gameDetails.name);
@@ -45,14 +48,14 @@ const GameScreen = () => {
     setCurrentUserName(userData?.name);
   };
 
+  const roundRef = doc(
+    db,
+    `games/${gameDetails.name}/rounds`,
+    `Round ${round}`
+  );
+
   useEffect(() => {
     fetchGameData();
-
-    const roundRef = doc(
-      db,
-      `games/${gameDetails.name}/rounds`,
-      `Round ${round}`
-    );
 
     const unsubscribe = onSnapshot(roundRef, (doc) => {
       const roundData = doc.data();
@@ -64,24 +67,19 @@ const GameScreen = () => {
       setCurrentTurn(roundData?.turn);
       setRoundStarted(roundData?.started);
       setRoundCompleted(roundData?.completed);
+      setCurrentEmojisSelected(roundData?.emojis);
     });
 
     console.log(currentTurn, auth.currentUser?.uid);
     console.log(currentTurn == auth.currentUser?.uid);
 
     setIsTurn(currentTurn == auth.currentUser?.uid);
-
-    console.log(isTurn);
+    setShowPhrase(currentTurn == auth.currentUser?.uid);
 
     return () => unsubscribe();
   }, [currentTurn, gameDetails.name, isTurn, round]);
 
   const handleGuessClick = async () => {
-    const roundRef = doc(
-      db,
-      `games/${gameDetails.name}/rounds`,
-      `Round ${round}`
-    );
     if (currentGuess !== phrase) {
       await updateDoc(roundRef, {
         guesses: arrayUnion({
@@ -99,17 +97,12 @@ const GameScreen = () => {
           correct: true,
         }),
       });
+      setShowPhrase(true);
     }
   };
 
   const handlePhraseClick = async (e: React.FormEvent, phrase: string) => {
     e.preventDefault();
-
-    const roundRef = doc(
-      db,
-      `games/${gameDetails.name}/rounds`,
-      `Round ${round}`
-    );
 
     await updateDoc(roundRef, {
       phrase: phrase,
@@ -117,10 +110,12 @@ const GameScreen = () => {
     });
   };
 
-  const [currentEmojiSelected, setCurrentEmoji] = useState([""]);
-  const handleEmojiClick = (emojiData: EmojiClickData) => {
+  const handleEmojiClick = async (emojiData: EmojiClickData) => {
     console.log(emojiData.emoji);
-    setCurrentEmoji([...currentEmojiSelected, emojiData.emoji]);
+
+    await updateDoc(roundRef, {
+      emojis: arrayUnion(emojiData.emoji),
+    });
   };
 
   return (
@@ -138,7 +133,7 @@ const GameScreen = () => {
             className="col-lg-6 text-center phrase-space"
             style={{ fontSize: "2rem" }}
           >
-            <Phrase phrase={phrase} />
+            <Phrase phrase={phrase} show={true} />
           </div>
         </div>
 
@@ -215,16 +210,15 @@ const GameScreen = () => {
                 {isTurn && roundStarted && (
                   <div>
                     <div
-                      className="row bg-primary"
+                      className="row bg-light"
                       id="emoji-display"
                       style={{
                         height: "40vh",
                         textAlign: "center",
-                        color: "white",
                       }}
                     >
-                      <h3>Emoji display</h3>
-                      <p style={{ fontSize: 50 }}>{currentEmojiSelected}</p>
+                      <h3 className="py-3">Emoji display</h3>
+                      <p style={{ fontSize: 50 }}>{currentEmojisSelected}</p>
                     </div>
                     <div
                       className="row bg-success"
@@ -242,15 +236,15 @@ const GameScreen = () => {
                 {!isTurn && roundStarted && (
                   <div>
                     <div
-                      className="row bg-primary"
+                      className="row bg-light"
                       id="emoji-display"
                       style={{
                         height: "70vh",
                         textAlign: "center",
-                        color: "white",
                       }}
                     >
-                      <h3>Emoji display</h3>
+                      <h3 className="py-3">Emoji display</h3>
+                      <p style={{ fontSize: 50 }}>{currentEmojisSelected}</p>
                     </div>
                     <div
                       className="row py-4"
