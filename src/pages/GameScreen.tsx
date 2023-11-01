@@ -4,7 +4,7 @@ import Player from "../components/Player";
 import Phrase from "../components/Phrase";
 import { EmojiClickData } from "emoji-picker-react";
 import EmojiPicker from "emoji-picker-react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   arrayUnion,
   doc,
@@ -19,6 +19,8 @@ import { GuessProps, PlayerDetails } from "../utils/types";
 const GameScreen = () => {
   const { state } = useLocation();
   const { gameDetails } = state;
+
+  const navigate = useNavigate();
 
   const listOfPhrases: string[] = [
     "World is a stage",
@@ -166,6 +168,14 @@ const GameScreen = () => {
     setRound(round + 1);
   };
 
+  const handleEndGameClick = async () => {
+    await updateDoc(roundRef, {
+      completed: true,
+    });
+
+    navigate("/dashboard");
+  };
+
   return (
     <div className="game-screen">
       <div className="container-fluid">
@@ -175,7 +185,9 @@ const GameScreen = () => {
           style={{ borderBottom: "1px solid #ddd" }}
         >
           <div className="col-lg-3" id="round-counter">
-            <h3 className="my-2">Round {round} of 3</h3>
+            <h3 className="my-2">
+              Round {round} of {players.length}
+            </h3>
           </div>
           <div
             className="col-lg-6 text-center phrase-space"
@@ -198,7 +210,7 @@ const GameScreen = () => {
                 isHost={i == 0}
               />
             ))}
-            {isTurn && roundStarted && (
+            {isTurn && roundStarted && round != players.length && (
               <div className="row mt-5">
                 <div className="col-6 offset-3 col-xl-4 offset-xl-4">
                   <button
@@ -207,6 +219,19 @@ const GameScreen = () => {
                     onClick={handleEndRoundClick}
                   >
                     End Round
+                  </button>
+                </div>
+              </div>
+            )}
+            {isTurn && roundStarted && round == players.length && (
+              <div className="row mt-5">
+                <div className="col-6 offset-3 col-xl-4 offset-xl-4">
+                  <button
+                    className="btn btn-danger"
+                    style={{ width: "100%" }}
+                    onClick={handleEndGameClick}
+                  >
+                    End Game
                   </button>
                 </div>
               </div>
