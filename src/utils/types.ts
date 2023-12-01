@@ -3,6 +3,7 @@ export type PlayerProps = {
   isTurn: boolean;
   isHost: boolean;
   score?: number;
+  winner?: boolean;
 };
 
 export type GuessProps = {

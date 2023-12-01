@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import GameSetup from "./pages/GameSetup";
 import GameLobby from "./pages/GameLobby";
 import GameScreen from "./pages/GameScreen";
+import GameOver from "./pages/GameOver";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/gamesetup" element={<GameSetup />} />
         <Route path="/gamelobby" element={<GameLobby />} />
         <Route path="/gamescreen" element={<GameScreen />} />
+        <Route path="/gameover" element={<GameOver />} />
       </Routes>
     </div>
   );

@@ -177,8 +177,8 @@ const GameScreen = () => {
     await updateDoc(roundRef, {
       completed: true,
     });
-
-    navigate("/dashboard");
+    
+    navigate("/gameover", {state:{players}});
   };
 
   return (
