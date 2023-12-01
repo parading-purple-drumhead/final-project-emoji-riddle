@@ -2,6 +2,7 @@ export type PlayerProps = {
   uid: string;
   isTurn: boolean;
   isHost: boolean;
+  score?: number;
 };
 
 export type GuessProps = {

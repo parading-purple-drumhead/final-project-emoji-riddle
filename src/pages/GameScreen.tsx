@@ -134,6 +134,11 @@ const GameScreen = () => {
           correct: true,
         }),
       });
+      const playersWithUpdatedScores = players.map((player) => {
+        if (player.player === auth.currentUser?.uid) player.score += 1;
+        return player;
+      });
+      await updateDoc(gameRef, { players: playersWithUpdatedScores });
       setShowPhrase(true);
     }
   };
@@ -208,6 +213,7 @@ const GameScreen = () => {
                 uid={player.player}
                 isTurn={player.player == currentTurn}
                 isHost={i == 0}
+                score={player.score}
               />
             ))}
             {isTurn && roundStarted && round != players.length && (

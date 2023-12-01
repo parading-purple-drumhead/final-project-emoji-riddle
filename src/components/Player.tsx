@@ -3,7 +3,7 @@ import { PlayerProps } from "../utils/types";
 import { db } from "../firebase/client";
 import { useEffect, useState } from "react";
 
-const Player = ({ uid, isTurn, isHost }: PlayerProps) => {
+const Player = ({ uid, isTurn, isHost, score }: PlayerProps) => {
   const [playerName, setPlayerName] = useState("");
   const [profilePhoto, setProfilePhoto] = useState("");
 
@@ -40,6 +40,8 @@ const Player = ({ uid, isTurn, isHost }: PlayerProps) => {
             (Turn)
           </span>
         )}
+        <br />
+        <span style={{ fontSize: "1rem", color: "#777" }}>Score: {score}</span>
       </div>
     </div>
   );
