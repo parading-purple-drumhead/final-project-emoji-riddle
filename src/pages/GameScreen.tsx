@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import { auth, db } from "../firebase/client";
 import { GuessProps, PlayerDetails } from "../utils/types";
+import Timer from "../components/Timer";
 
 const GameScreen = () => {
   const { state } = useLocation();
@@ -61,6 +62,7 @@ const GameScreen = () => {
   const [currentGuess, setCurrentGuess] = useState("");
   const [guesses, setGuesses] = useState<GuessProps[]>([]);
   const [showPhrase, setShowPhrase] = useState(false);
+  const [timerVisible, setTimerVisible] = useState(false);
 
   const gameRef = doc(db, "games", gameDetails.name);
 
@@ -143,6 +145,30 @@ const GameScreen = () => {
     }
   };
 
+  const handleTimesUp = () => {
+    // Logic to handle end of round when the timer reaches zero
+    handleEndRoundOrGame();
+  };
+
+  const handleEndRoundOrGame = async () => {
+    await updateDoc(roundRef, {
+      completed: true,
+    });
+
+    if (round < players.length) {
+      await updateDoc(gameRef, {
+        currentRound: increment(1),
+      });
+      setRound(round + 1);
+      setTimerVisible(false); // Reset the timer visibility for the next round
+    } else {
+      await updateDoc(gameRef, {
+        completed: true,
+      });
+      navigate("/gameover", { state: { players } });
+    }
+  };
+
   const handlePhraseClick = async (e: React.FormEvent, phrase: string) => {
     e.preventDefault();
 
@@ -150,6 +176,8 @@ const GameScreen = () => {
       phrase: phrase,
       started: true,
     });
+
+    setTimerVisible(true);
   };
 
   const handleEmojiClick = async (emojiData: EmojiClickData) => {
@@ -160,26 +188,26 @@ const GameScreen = () => {
     });
   };
 
-  const handleEndRoundClick = async () => {
-    await updateDoc(roundRef, {
-      completed: true,
-    });
+  // const handleEndRoundClick = async () => {
+  //   await updateDoc(roundRef, {
+  //     completed: true,
+  //   });
 
-    if (round < players.length)
-      await updateDoc(gameRef, {
-        currentRound: increment(1),
-      });
-
-    setRound(round + 1);
-  };
-
-  const handleEndGameClick = async () => {
-    await updateDoc(roundRef, {
-      completed: true,
-    });
+  //   if (round < players.length)
+  //     await updateDoc(gameRef, {
+  //       currentRound: increment(1),
+  //     });
     
-    navigate("/gameover", {state:{players}});
-  };
+  //   setRound(round + 1);
+  // };
+
+  // const handleEndGameClick = async () => {
+  //   await updateDoc(roundRef, {
+  //     completed: true,
+  //   });
+
+  //   navigate("/gameover", {state:{players}});
+  // };
 
   return (
     <div className="game-screen">
@@ -200,8 +228,12 @@ const GameScreen = () => {
           >
             <Phrase phrase={phrase} show={showPhrase} />
           </div>
+          <div className="col-lg-3" id="round-counter">
+            <h3 className="my-2">
+              {timerVisible && <Timer onTimesUp={handleTimesUp}/>} {/* Render Timer when timerVisible is true */}
+            </h3>
+          </div>
         </div>
-
         <div className="row" id="round-panels">
           <div
             className="col-lg-3"
@@ -222,7 +254,7 @@ const GameScreen = () => {
                   <button
                     className="btn btn-danger"
                     style={{ width: "100%" }}
-                    onClick={handleEndRoundClick}
+                    onClick={handleEndRoundOrGame}
                   >
                     End Round
                   </button>
@@ -235,7 +267,7 @@ const GameScreen = () => {
                   <button
                     className="btn btn-danger"
                     style={{ width: "100%" }}
-                    onClick={handleEndGameClick}
+                    onClick={handleEndRoundOrGame}
                   >
                     End Game
                   </button>
@@ -289,7 +321,6 @@ const GameScreen = () => {
                 )}
               </div>
             )}
-
             <div className="row">
               <div
                 className="col-lg-8"
