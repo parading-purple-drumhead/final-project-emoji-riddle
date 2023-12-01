@@ -21,3 +21,7 @@ export type PlayerDetails = {
   player: string;
   score: number;
 };
+
+export type TimerProps = {
+  onTimesUp: ()=>void;
+}
