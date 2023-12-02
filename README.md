@@ -28,9 +28,7 @@ User Flow:
 
 ### What does your application do?
 When the user opens the application, they have to sign in using Google SSO. They are given the option to create a new game or join an existing game. Host/Non-Host are automatically detected based on option selected. When all users join the game, the admin user (host) needs to press start game to begin.
-Gameplay: When it's your turn, you pick a phrase from the list of phrases and input emojis that best describe the phrase. The other participants have to try to guess the original phrase from the emojis picked by you. Once the user guesses correctly, feedback is shown in the chat and the round can be ended to start the next turn. The number of rounds will correspond to the number of players. Currently, we're not playing with a timer and we aren't keeping score, this functionality will be added for the final deliverable. Other functionality we will add to the final deliverable is option to delete the selected emojis, creating a link for other users to join a game, fixing security issues, and improving aesthetics of the application. 
-
-
+Gameplay: When it's your turn, you pick a phrase from the list of phrases and input emojis that best describe the phrase. The other participants have to try to guess the original phrase from the emojis picked by you. Once the user guesses correctly, feedback is shown in the chat and the round can be ended to start the next turn. The number of rounds will correspond to the number of players. Currently, we're not playing with a timer and we aren't keeping score, this functionality will be added for the final deliverable.
 # Checkpoint 1
 -----------------
 ### What makes it different than a CRUD app? I.e., what functionality does it provide that is not just a user interface layer on top of a database of user information,and the ability to view / add to / change that information?
