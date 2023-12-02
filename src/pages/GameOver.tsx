@@ -1,10 +1,12 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { PlayerDetails } from "../utils/types";
 import Player from "../components/Player";
 
 const GameOver = () => {
   const { state } = useLocation();
   const { players } = state;
+
+  const navigate = useNavigate();
 
   let highScore = 0;
   for (let i = 0; i < players.length; i++) {
@@ -31,6 +33,17 @@ const GameOver = () => {
               ></Player>
             );
           })}
+          <br></br>
+          <div className="row">
+            <div className="col-4 offset-4">
+              <button
+                className="btn btn-primary btn-large"
+                onClick={() => navigate("/dashboard")}
+              >
+                Go to Dashboard
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* {players.map((player: PlayerDetails)=> {
