@@ -1,13 +1,21 @@
-# Emoji Riddle with Friends
+# PictoVerse Puzzle
 [GitHub Repo Link](https://github.com/eleon23/final-project-emoji-riddle)
 ## Team
 1. Eric Leon (eleon23@uic.edu)
 2. Sudhanshu Basu Roy (sbasur2@uic.edu)
 3. Mridvika Suresh (msures3@uic.edu)
+   
+# Final Deliverable
+For our final deliverable, we wanted to accomplish the following goals.
+1. Improving gameplay: adding a timer for the rounds, adding points for users including an end of game scoreboard
+2. Fixes: redirect user to relevant pages, end of round markers, fixing chat/guesses functionality 
+3. Adding few security details: making user input valid and secure
+4. Working on aesthetics of the application
+We were able to accomplish almost all our goals such as improving gameplay tasks, fixed some previous bugs we discovered after further testing, including redirecting user to relevant pages and end of round markers. We were not able to make security changes, but worked a bit on the aesthetics of the application which includes improving the aesthetics of some of the components and changing the wordy "Emoji Riddle with Friends" to "PictoVerse Puzzle".
 
 # Checkpoint 2
 -----------------
-### [Deployed Website Link]([Emoji Riddle With Friends](https://emoji-riddle-with-friends.netlify.app/)])
+### [Deployed Website Link]([PictoVerse Puzzle](https://pictoverse-puzzle.netlify.app/)])
 
 ### MVP Deliverables:
 The main goal for our MVP at the end of checkpoint 2 is for our application to be able to host multiple users in a lobby. We were thinking of 6 players max and have them be able to communicate emoji riddles to each other. A timer and point system will not be integrated for this deliverable. We also aim to have data being safely and securely being saved for each individual user. Finally, our last goal is to establish basic game functionality. So in short our goals:
