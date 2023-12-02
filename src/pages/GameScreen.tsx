@@ -98,6 +98,7 @@ const GameScreen = () => {
     });
 
     return () => unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -415,13 +416,14 @@ const GameScreen = () => {
               <div className="col-lg-4 pt-2" id="chat-panel">
                 <h4 className="text-center">Guesses</h4>
                 <div className="chats row mt-3">
-                  {guesses.map((guess) => (
-                    <Guess
-                      name={guess.name}
-                      guess={guess.guess}
-                      correct={guess.correct}
-                    />
-                  ))}
+                  {guesses &&
+                    guesses.map((guess) => (
+                      <Guess
+                        name={guess.name}
+                        guess={guess.guess}
+                        correct={guess.correct}
+                      />
+                    ))}
                 </div>
               </div>
             </div>

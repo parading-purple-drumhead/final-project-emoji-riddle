@@ -34,12 +34,12 @@ const Dashboard = () => {
                 role="alert"
               >
                 <strong>How to Play: </strong>
-                Welcome to Emoji Riddle with Friends. The rules of the game are
-                simple. When it's your turn, you pick a phrase from the list and
-                emojis that best describe the phrase. The other participants
-                have to try to guess the original phrase from the emojis picked
-                by you. Currently, we're not playing with a timer, so take your
-                time guessing!
+                Welcome to PictoVerse Puzzle. The rules of the game are simple.
+                When it's your turn, you pick a phrase from the list and emojis
+                that best describe the phrase. The other participants have to
+                try to guess the original phrase from the emojis picked by you.
+                Currently, we're not playing with a timer, so take your time
+                guessing!
               </div>
               <p className="text-center" style={{ fontSize: "1.5rem" }}>
                 Select One

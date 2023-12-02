@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { TimerProps } from "../utils/types";
 
 function Timer({ onTimesUp }: TimerProps) {
-  const [seconds, setSeconds] = useState(15);
+  const [seconds, setSeconds] = useState(60);
 
   useEffect(() => {
     // Function to handle the countdown logic

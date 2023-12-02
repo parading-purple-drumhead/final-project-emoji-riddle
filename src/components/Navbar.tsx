@@ -6,7 +6,7 @@ const Navbar = () => {
       <nav className="navbar navbar-expand-lg bg-primary">
         <div className="container-fluid">
           <Link to="/" className="navbar-brand text-white">
-            Emoji Riddle With Friends
+            PictoVerse Puzzle
           </Link>
         </div>
       </nav>
