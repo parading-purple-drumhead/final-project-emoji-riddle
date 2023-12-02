@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Guess from "../components/Guess";
 import Player from "../components/Player";
 import Phrase from "../components/Phrase";
@@ -64,23 +64,20 @@ const GameScreen = () => {
   const [showPhrase, setShowPhrase] = useState(false);
   const [timerVisible, setTimerVisible] = useState(false);
 
-  const gameRef = doc(db, "games", gameDetails.name);
+  const gameRef = useMemo(
+    () => doc(db, "games", gameDetails.name),
+    [gameDetails.name]
+  );
 
-  const fetchGameData = async () => {
-    const gameData = (await getDoc(gameRef)).data();
-
+  const fetchCurrentUserData = async () => {
     const userRef = doc(db, "users", auth.currentUser!.uid);
     const userData = (await getDoc(userRef)).data();
-
-    setRound(gameData?.currentRound);
-    setPlayers(gameData?.players);
     setCurrentUserName(userData?.name);
   };
 
-  const roundRef = doc(
-    db,
-    `games/${gameDetails.name}/rounds`,
-    `Round ${round}`
+  const roundRef = useMemo(
+    () => doc(db, `games/${gameDetails.name}/rounds`, `Round ${round}`),
+    [gameDetails.name, round]
   );
 
   const fetchCurrentTurnUserData = async () => {
@@ -90,8 +87,20 @@ const GameScreen = () => {
   };
 
   useEffect(() => {
-    fetchGameData();
+    fetchCurrentUserData();
+    const unsubscribe = onSnapshot(gameRef, (document) => {
+      const gameData = document.data();
 
+      console.log(gameData);
+
+      setRound(gameData?.currentRound);
+      setPlayers(gameData?.players);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
     const unsubscribe = onSnapshot(roundRef, (doc) => {
       const roundData = doc.data();
 
@@ -111,12 +120,22 @@ const GameScreen = () => {
       setCurrentTurnName(currentUserName);
     else fetchCurrentTurnUserData();
 
+    // Start timer once round starts
+    setTimerVisible(roundStarted);
+
     setIsTurn(currentTurn == auth.currentUser?.uid);
     setShowPhrase(currentTurn == auth.currentUser?.uid);
 
     return () => unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentTurn, gameDetails.name, isTurn, round, roundCompleted]);
+  }, [
+    currentTurn,
+    gameDetails.name,
+    isTurn,
+    round,
+    roundCompleted,
+    roundStarted,
+  ]);
 
   const handleGuessClick = async () => {
     if (currentGuess.toLowerCase() !== phrase.toLowerCase()) {
@@ -145,11 +164,6 @@ const GameScreen = () => {
     }
   };
 
-  const handleTimesUp = () => {
-    // Logic to handle end of round when the timer reaches zero
-    handleEndRoundOrGame();
-  };
-
   const handleEndRoundOrGame = async () => {
     await updateDoc(roundRef, {
       completed: true,
@@ -159,8 +173,9 @@ const GameScreen = () => {
       await updateDoc(gameRef, {
         currentRound: increment(1),
       });
-      setRound(round + 1);
+      // setRound(round + 1);
       setTimerVisible(false); // Reset the timer visibility for the next round
+      setRoundCompleted(true);
     } else {
       await updateDoc(gameRef, {
         completed: true,
@@ -197,7 +212,7 @@ const GameScreen = () => {
   //     await updateDoc(gameRef, {
   //       currentRound: increment(1),
   //     });
-    
+
   //   setRound(round + 1);
   // };
 
@@ -219,7 +234,7 @@ const GameScreen = () => {
         >
           <div className="col-lg-3" id="round-counter">
             <h3 className="my-2">
-              Round {round} of {players.length}
+              Round {round} of {players && players.length}
             </h3>
           </div>
           <div
@@ -230,7 +245,8 @@ const GameScreen = () => {
           </div>
           <div className="col-lg-3" id="round-counter">
             <h3 className="my-2">
-              {timerVisible && <Timer onTimesUp={handleTimesUp}/>} {/* Render Timer when timerVisible is true */}
+              {timerVisible && <Timer onTimesUp={handleEndRoundOrGame} />}{" "}
+              {/* Render Timer when timerVisible is true */}
             </h3>
           </div>
         </div>
@@ -240,14 +256,15 @@ const GameScreen = () => {
             id="playerPanel"
             style={{ borderRight: "1px solid #ddd", height: "80vh" }}
           >
-            {players.map((player, i) => (
-              <Player
-                uid={player.player}
-                isTurn={player.player == currentTurn}
-                isHost={i == 0}
-                score={player.score}
-              />
-            ))}
+            {players &&
+              players.map((player, i) => (
+                <Player
+                  uid={player.player}
+                  isTurn={player.player == currentTurn}
+                  isHost={i == 0}
+                  score={player.score}
+                />
+              ))}
             {isTurn && roundStarted && round != players.length && (
               <div className="row mt-5">
                 <div className="col-6 offset-3 col-xl-4 offset-xl-4">
@@ -261,7 +278,7 @@ const GameScreen = () => {
                 </div>
               </div>
             )}
-            {isTurn && roundStarted && round == players.length && (
+            {/* {isTurn && roundStarted && players && round == players.length && (
               <div className="row mt-5">
                 <div className="col-6 offset-3 col-xl-4 offset-xl-4">
                   <button
@@ -273,7 +290,7 @@ const GameScreen = () => {
                   </button>
                 </div>
               </div>
-            )}
+            )} */}
           </div>
 
           <div className="col-lg-9" id="gamePanel">

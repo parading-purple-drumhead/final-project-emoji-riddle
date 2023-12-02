@@ -23,13 +23,21 @@ const Login = () => {
       console.log("User:", user);
       console.log("Additional Info:", additionalUserInfo);
 
-      if (additionalUserInfo?.isNewUser) {
-        await setDoc(doc(db, "users", user.uid), {
-          name: user.displayName,
-          email: user.email,
-          profilePhoto: user.photoURL,
-        });
-      }
+      // // Uncomment for live databse
+      // if (additionalUserInfo?.isNewUser) {
+      //   await setDoc(doc(db, "users", user.uid), {
+      //     name: user.displayName,
+      //     email: user.email,
+      //     profilePhoto: user.photoURL,
+      //   });
+      // }
+
+      // Use for emulator
+      await setDoc(doc(db, "users", user.uid), {
+        name: user.displayName,
+        email: user.email,
+        profilePhoto: user.photoURL,
+      });
 
       navigate("/dashboard", { state: { displayName: user.displayName } });
     } catch (error) {
