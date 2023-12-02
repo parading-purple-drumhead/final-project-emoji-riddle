@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { TimerProps } from "../utils/types";
 
 function Timer({ onTimesUp }: TimerProps) {
-  const [seconds, setSeconds] = useState(60);
+  const [seconds, setSeconds] = useState(15);
 
   useEffect(() => {
     // Function to handle the countdown logic
@@ -30,20 +30,20 @@ function Timer({ onTimesUp }: TimerProps) {
   return (
     <div className="container">
       {/* <div className="card"> */}
-        <div className="countdown-text">
-          {/* Display countdown timer if seconds are greater than 0 */}
-          {seconds > 0 ? (
-            <p>
-              Time Remaining:{" "}
-              <span style={{ fontWeight: 600 }}>
-                {seconds < 10 ? `0${seconds}` : seconds}
-              </span>
-            </p>
-          ) : (
-            // Display if countdown timer reaches 0
-            <p>Times Up!</p>
-          )}
-        </div>
+      <div className="countdown-text">
+        {/* Display countdown timer if seconds are greater than 0 */}
+        {seconds > 0 ? (
+          <p>
+            Time Remaining:{" "}
+            <span style={{ fontWeight: 600 }}>
+              {seconds < 10 ? `0${seconds}` : seconds}
+            </span>
+          </p>
+        ) : (
+          // Display if countdown timer reaches 0
+          <p>Times Up!</p>
+        )}
+      </div>
       {/* </div> */}
     </div>
   );
