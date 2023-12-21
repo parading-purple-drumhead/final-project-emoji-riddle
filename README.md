@@ -38,13 +38,13 @@ Follow these steps to install and run PictoVerse Puzzle on your local machine:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/PictoVerse-Puzzle.git
+git clone https://github.com/parading-purple-drumhead/pictoverse-puzzle.git
 ```
 
 2. Navigate to the project directory:
 
 ```bash
-cd PictoVerse-Puzzle
+cd pictoverse-puzzle
 ```
 
 3. Install dependencies:
